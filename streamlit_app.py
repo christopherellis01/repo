@@ -34,6 +34,22 @@ def call_sagemaker(prompt, endpoint):
     response = sagemaker_client.invoke_endpoint(payload(prompt, endpoint))
     return response
 
+def query_model(prompt, endpoint):
+    if 'claude' in endpoint:
+        # Claude request format
+        body = {'prompt': prompt, 'params':{}}
+    elif 'llama' in endpoint:
+        # LLAMA request format
+        body = {'text': prompt, 'params':{}}
+
+    if 'bedrock' in endpoint:
+        response = call_bedrock(body, endpoint)
+    elif 'sagemaker' in endpoint:
+        response = call_sagemaker(body, endpoint)
+
+    # Handle model-specific response parsing
+    return response_text
+
 # Main title and welcome message
 st.title("Writer's Assistant")
 st.write("Welcome to the Writer's Assistant App!")
