@@ -39,6 +39,14 @@ temp = st.sidebar.slider('Temperature:', 0.0, 1.0, 0.5)
 st.session_state.model = model
 st.session_state.temp = temp
 
+#main screen input prompts and output text areas
+concept = st.text_input("Story concept:")
+
+if st.button("Generate story draft"):
+    story_draft = generate_story(concept)
+    st.text_area("Story draft", story_draft, height=400)
+    ...
+
 # Fetch and display webpage content if BeautifulSoup model is selected
 if model == 'BeautifulSoup':
     url = "https://w.amazon.com/bin/view/Users/chaeclrk/assets/generative-ai/AuthorsAssistantBedrockSageMaker"
