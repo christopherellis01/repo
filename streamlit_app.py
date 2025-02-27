@@ -21,8 +21,18 @@ def extract_content(html_content):
 
 # Dictionary containing models
 md = {
-    'models': ['BeautifulSoup', 'Model B', 'Model C']
+    'models': ['Bedrock', 'SageMaker', 'Model C']
 }
+
+# Bedrock
+def call_bedrock(prompt, endpoint):
+    response = bedrock_client.invoke_model(payload(prompt, endpoint))
+    return response
+
+# SageMaker
+def call_sagemaker(prompt, endpoint):
+    response = sagemaker_client.invoke_endpoint(payload(prompt, endpoint))
+    return response
 
 # Main title and welcome message
 st.title("Writer's Assistant")
@@ -39,13 +49,21 @@ temp = st.sidebar.slider('Temperature:', 0.0, 1.0, 0.5)
 st.session_state.model = model
 st.session_state.temp = temp
 
-#main screen input prompts and output text areas
+# Main screen input prompts and output text areas
 concept = st.text_input("Story concept:")
 
 if st.button("Generate story draft"):
     story_draft = generate_story(concept)
     st.text_area("Story draft", story_draft, height=400)
     ...
+
+# Page iteration
+st.header("Generate story pages")
+
+for i in range(10):
+    if st.button(f"Generate page {i+1}"):
+        next_page = generate_page(i)
+        st.text_area(f"Page {i+1}", next_page)
 
 # Fetch and display webpage content if BeautifulSoup model is selected
 if model == 'BeautifulSoup':
