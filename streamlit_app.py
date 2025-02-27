@@ -1,5 +1,7 @@
 <> streamlit_app.py v7
 
+#!/usr/bin/env python3.8
+
 import streamlit as st
 
 st.title("Writer's Assistant")
